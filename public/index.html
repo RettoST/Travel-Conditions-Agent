@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>随行条件 · 旅游攻略 Agent</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #222;
+      line-height: 1.6;
+    }
+    h1 { font-size: 24px; margin-bottom: 4px; }
+    .subtitle { color: #666; margin-bottom: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+    label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; }
+    .full { grid-column: 1 / -1; }
+    button {
+      margin-top: 16px;
+      padding: 10px 28px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+    #status { margin-top: 12px; color: #666; font-size: 14px; min-height: 20px; }
+    #output {
+      margin-top: 16px;
+      padding: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 200px;
+      font-size: 14px;
+    }
+    .citation {
+      color: #2563eb;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .citation:hover { color: #1d4ed8; }
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #modal.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 80vh;
+      overflow: auto;
+      padding: 24px;
+      position: relative;
+    }
+    .modal-box h3 { margin-top: 0; }
+    .modal-box .meta { color: #666; font-size: 13px; margin-bottom: 12px; }
+    .modal-box .content {
+      background: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+    .modal-box .close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 22px;
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+    }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <h1>随行条件 · 旅游攻略 Agent</h1>
+  <div class="subtitle">输入多条件，从攻略库生成分时段行程、雨天备选与出处溯源</div>
+
+  <div class="grid">
+    <div>
+      <label>城市</label>
+      <input id="city" value="杭州" />
+    </div>
+    <div>
+      <label>天数</label>
+      <input id="days" type="number" value="2" min="1" max="7" />
+    </div>
+    <div>
+      <label>同行人员（逗号分隔：child / elderly / adult）</label>
+      <input id="companions" value="child,elderly" />
+    </div>
+    <div>
+      <label>天气（逗号分隔：day1_sunny / day2_rain）</label>
+      <input id="weather" value="day1_sunny,day2_rain" />
+    </div>
+    <div>
+      <label>步行强度上限</label>
+      <select id="walkingLevel">
+        <option value="低" selected>低</option>
+        <option value="中">中</option>
+        <option value="高">高</option>
+      </select>
+    </div>
+    <div>
+      <label>设施需求（逗号分隔：baby_room / accessible）</label>
+      <input id="facilityNeeds" value="baby_room,accessible" />
+    </div>
+    <div class="full">
+      <label>补充说明</label>
+      <textarea id="extraInput" rows="2">老人腿脚不便，希望少爬坡</textarea>
+    </div>
+  </div>
+
+  <button id="submit">生成行程</button>
+  <div id="status"></div>
+  <div id="output"></div>
+
+  <div id="modal">
+    <div class="modal-box">
+      <button class="close" id="modalClose">×</button>
+      <h3 id="modalTitle">出处详情</h3>
+      <div class="meta" id="modalMeta"></div>
+      <div class="content" id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let currentChunkIds = [];
+
+    function splitList(value) {
+      return value.split(',').map((s) => s.trim()).filter(Boolean);
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // 把 [片段N] 渲染成可点击标记，N 对应 chunkIds[N-1]
+    function renderCitations(text, chunkIds) {
+      return escapeHtml(text).replace(/\[片段\s*(\d+)\]/g, (match, n) => {
+        const chunkId = chunkIds[Number(n) - 1] || '';
+        return `<span class="citation" data-chunk-id="${chunkId}" title="点击查看出处">${match}</span>`;
+      });
+    }
+
+    async function submitQuery() {
+      const body = {
+        city: $('city').value.trim(),
+        days: Number($('days').value) || 1,
+        companions: splitList($('companions').value),
+        weather: splitList($('weather').value),
+        walkingLevel: $('walkingLevel').value,
+        facilityNeeds: splitList($('facilityNeeds').value),
+        extraInput: $('extraInput').value.trim(),
+      };
+
+      $('output').textContent = '';
+      $('status').textContent = '连接中…';
+      $('submit').disabled = true;
+      currentChunkIds = [];
+
+      let fullText = '';
+      let buffer = '';
+
+      try {
+        const res = await fetch('/api/query/stream', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (!res.ok || !res.body) {
+          $('status').textContent = '请求失败，请重试';
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          const blocks = buffer.split('\n\n');
+          buffer = blocks.pop();
+
+          for (const block of blocks) {
+            const eventMatch = block.match(/event: (.+)/);
+            const dataMatch = block.match(/data: (.+)/);
+            if (!eventMatch || !dataMatch) continue;
+
+            const event = eventMatch[1].trim();
+            let data;
+            try {
+              data = JSON.parse(dataMatch[1]);
+            } catch {
+              continue;
+            }
+
+            if (event === 'meta') {
+              currentChunkIds = data.chunkIds || [];
+              $('status').textContent = `检索到 ${data.retrievedChunks} 条片段，生成中…`;
+            } else if (event === 'chunk') {
+              fullText += data.text;
+              $('output').textContent = fullText;
+            } else if (event === 'done') {
+              $('status').textContent = '生成完成';
+              $('output').innerHTML = renderCitations(fullText, currentChunkIds);
+            } else if (event === 'error') {
+              $('status').textContent = data.message || '生成失败';
+            }
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        $('status').textContent = '网络异常，请重试';
+      } finally {
+        $('submit').disabled = false;
+      }
+    }
+
+    async function openCitation(chunkId) {
+      if (!chunkId) {
+        alert('出处暂不可用');
+        return;
+      }
+      try {
+        const res = await fetch(`/api/chunks/${encodeURIComponent(chunkId)}`);
+        if (!res.ok) {
+          alert('出处暂不可用');
+          return;
+        }
+        const data = await res.json();
+        $('modalTitle').textContent = data.location || '攻略片段';
+        $('modalMeta').textContent =
+          `来源：${data.source || '来源待补充'}　|　出处：${data.sourceRef || '未标注'}` +
+          `　|　步行：${data.walkingLevel || '未知'}　|　母婴：${data.babyFacility || '未知'}　|　无障碍：${data.accessibility || '未知'}`;
+        $('modalContent').textContent = data.content || '';
+        $('modal').classList.add('open');
+      } catch (err) {
+        console.error(err);
+        alert('出处暂不可用');
+      }
+    }
+
+    $('submit').addEventListener('click', submitQuery);
+    $('output').addEventListener('click', (e) => {
+      const el = e.target.closest('.citation');
+      if (el) openCitation(el.dataset.chunkId);
+    });
+    $('modalClose').addEventListener('click', () => $('modal').classList.remove('open'));
+    $('modal').addEventListener('click', (e) => {
+      if (e.target.id === 'modal') $('modal').classList.remove('open');
+    });
+  </script>
+</body>
+</html>

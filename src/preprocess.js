@@ -41,7 +41,7 @@ function inferCrowd(text) {
 }
 
 function inferWalking(text) {
-  if (/爬山|徒步|台阶多|步行长|爬坡/.test(text)) return '高';
-  if (/平坦|少走路|轻松|缆车|电瓶车/.test(text)) return '低';
+  if (/爬山|徒步|台阶多|爬台阶|步行长|爬坡/.test(text)) return '高';
+  if (/平坦|少走路|轻松|电瓶车/.test(text)) return '低';
   return '中';
 }
