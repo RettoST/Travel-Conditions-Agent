@@ -1,0 +1,8 @@
+{
+  "city": "北京",
+  "days": 2,
+  "companions": ["adult"],
+  "weather": ["day1_sunny"],
+  "walkingLevel": "中",
+  "facilityNeeds": []
+}

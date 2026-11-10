@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>随行条件 · 多代同游智能行程规划</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+  :root {
+    --brand: #2563EB;
+    --brand-soft: #EFF4FF;
+    --green: #0E9F6E;
+  }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #F5F7FA;
+  }
+  .tag-btn {
+    transition: all .16s ease;
+  }
+  .tag-btn:hover {
+    border-color: #A9C2F8;
+    color: #1D4ED8;
+  }
+  .tag-on {
+    background-color: #EFF4FF;
+    border-color: #2563EB;
+    color: #1D4ED8;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+  }
+  .ghost-grid {
+    background-image: radial-gradient(#D6DEEA 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+  }
+</style>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center text-slate-800">
+<div class="w-full h-full max-w-[1440px] flex flex-col bg-[#F5F7FA] overflow-hidden">
+<!-- 顶部导航 -->
+<header class="shrink-0 h-[64px] bg-white border-b border-slate-200/80 flex items-center justify-between px-8">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2.5 no-underline" href="home.html">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center text-white shadow-sm shadow-blue-200">
+<iconify-icon icon="solar:compass-bold" style="font-size:20px"></iconify-icon>
+</div>
+<div class="leading-tight">
+<p class="text-[16px] font-bold text-slate-900 tracking-tight m-0">随行条件</p>
+<p class="text-[11px] text-slate-500 m-0">多代同游智能行程规划</p>
+</div>
+</a>
+<span class="ml-4 px-2 py-0.5 rounded-md bg-slate-100 text-[11px] text-slate-500 border border-slate-200">Beta</span>
+</div>
+<nav class="flex items-center gap-1 text-[13px]">
+<a class="px-3.5 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold no-underline" href="home.html">新建行程</a>
+<a class="px-3.5 py-2 rounded-lg text-slate-600 hover:bg-slate-100 no-underline" href="result.html">我的行程</a>
+<a class="px-3.5 py-2 rounded-lg text-slate-600 hover:bg-slate-100 no-underline" href="admin.html">攻略后台</a>
+<div class="w-px h-5 bg-slate-200 mx-2"></div>
+<button class="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-slate-100" type="button">
+<span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-[12px] font-semibold flex items-center justify-center">林</span>
+<span class="text-[13px] text-slate-700">林女士</span>
+</button>
+</nav>
+</header>
+<!-- 主体 -->
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<!-- 首屏标题区 -->
+<section class="relative overflow-hidden">
+<div class="absolute inset-0 ghost-grid opacity-60 pointer-events-none"></div>
+<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-gradient-to-r from-blue-100/70 via-emerald-50/60 to-blue-100/70 blur-3xl rounded-full pointer-events-none"></div>
+<div class="relative max-w-[1180px] mx-auto px-8 pt-14 pb-8">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+<div class="max-w-[620px]">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-[12px] text-slate-600 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              对接 50 篇已验证攻略库 · 每条建议均可溯源
+            </div>
+<h1 class="mt-5 text-[40px] leading-[1.15] font-bold text-slate-900 tracking-tight">
+              把家人的条件说清楚，<br/>
+<span class="bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">剩下的交给随行条件</span>
+</h1>
+<p class="mt-4 text-[15px] leading-7 text-slate-600">
+              输入同行人员、体力与设施需求，AI 会检索攻略原文片段，为三代同行生成一份可执行、可核对的行程。
+            </p>
+</div>
+<div class="grid grid-cols-3 gap-3 shrink-0">
+<div class="w-[112px] px-4 py-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+<p class="text-[22px] font-bold text-slate-900 leading-none">50</p>
+<p class="text-[11px] text-slate-500 mt-1.5">攻略篇数</p>
+</div>
+<div class="w-[112px] px-4 py-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+<p class="text-[22px] font-bold text-slate-900 leading-none">312</p>
+<p class="text-[11px] text-slate-500 mt-1.5">可用片段</p>
+</div>
+<div class="w-[112px] px-4 py-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+<p class="text-[22px] font-bold text-slate-900 leading-none">4.8<span class="text-[13px] font-medium text-slate-400">/5</span></p>
+<p class="text-[11px] text-slate-500 mt-1.5">家庭用户评分</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 条件表单卡片 -->
+<section class="max-w-[1180px] mx-auto px-8 pb-12">
+<form class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_40px_-16px_rgba(15,23,42,0.16)] overflow-hidden" id="planForm">
+<!-- 卡片头 -->
+<div class="px-8 py-5 bg-blue-50/50 border-b border-slate-100">
+  <label class="flex items-center gap-1.5 text-[13px] font-semibold text-blue-800 mb-2">
+    <iconify-icon icon="solar:magic-stick-3-bold" style="font-size:16px"></iconify-icon>
+    直接告诉 AI 你的需求（智能解析）
+  </label>
+  <div class="relative">
+    <input class="w-full h-11 pl-4 pr-24 rounded-xl border border-blue-200 bg-white text-[14px] shadow-sm focus:border-blue-500 outline-none" 
+           placeholder="例如：带3岁小孩和腿脚不便的老人去杭州玩两天，明天下雨，不想走太多路..." />
+    <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 px-4 h-8 bg-blue-600 text-white text-[12px] font-medium rounded-lg">
+      一键解析
+    </button>
+  </div>
+  <p class="text-[11px] text-slate-500 mt-1.5">系统将自动拆解为右侧表单条件</p>
+</div>
+<div class="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-white to-blue-50/40">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+<iconify-icon icon="solar:magic-stick-3-bold" style="font-size:19px"></iconify-icon>
+</div>
+<div>
+<p class="text-[15px] font-semibold text-slate-900 m-0">填写出行条件</p>
+<p class="text-[12px] text-slate-500 m-0">条件越具体，生成的行程越贴合家人实际情况</p>
+</div>
+</div>
+<span class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-[11px] border border-emerald-200">
+<iconify-icon icon="solar:shield-check-bold" style="font-size:13px"></iconify-icon>
+            隐私数据仅用于本次生成
+          </span>
+</div>
+<div class="px-8 py-7 grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- 左列 -->
+<div class="lg:col-span-7 space-y-6">
+<!-- 城市 + 天数 -->
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="flex items-center gap-1.5 text-[13px] font-semibold text-slate-700 mb-2" for="cityInput">
+<iconify-icon class="text-blue-600" icon="solar:map-point-bold" style="font-size:15px"></iconify-icon>
+                  目的地城市
+                </label>
+<div class="relative">
+<input class="w-full h-11 pl-10 pr-3 rounded-lg border border-slate-200 bg-slate-50/60 text-[14px] text-slate-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition" id="cityInput" name="city" placeholder="例如：杭州" value="杭州"/>
+<iconify-icon class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" icon="solar:magnifer-bold" style="font-size:16px"></iconify-icon>
+</div>
+</div>
+<div>
+<label class="flex items-center gap-1.5 text-[13px] font-semibold text-slate-700 mb-2" for="daysSelect">
+<iconify-icon class="text-blue-600" icon="solar:calendar-bold" style="font-size:15px"></iconify-icon>
+                  行程天数
+                </label>
+<div class="relative">
+<select class="w-full h-11 pl-3 pr-10 rounded-lg border border-slate-200 bg-slate-50/60 text-[14px] text-slate-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition" id="daysSelect" name="days">
+<option value="1">1 天 · 当日往返</option>
+<option selected="" value="2">2 天 · 周末短途</option>
+<option value="3">3 天 · 小长假</option>
+<option value="4">4 天 · 深度游</option>
+</select>
+</div>
+</div>
+</div>
+<!-- 同行人员 -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="flex items-center gap-1.5 text-[13px] font-semibold text-slate-700">
+<iconify-icon class="text-blue-600" icon="solar:users-group-rounded-bold" style="font-size:15px"></iconify-icon>
+                  同行人员
+                </span>
+<span class="text-[11px] text-slate-400">可多选</span>
+</div>
+<div class="flex flex-wrap gap-2.5" id="peopleGroup">
+<button class="tag-btn tag-on h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="老人" type="button">
+<span>👴</span>老人
+                </button>
+<button class="tag-btn tag-on h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="小孩" type="button">
+<span>🧒</span>小孩
+                </button>
+<button class="tag-btn tag-on h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="成人" type="button">
+<span>🧑</span>成人
+                </button>
+<button class="tag-btn h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="宠物" type="button">
+<span>🐕</span>宠物
+                </button>
+</div>
+</div>
+<!-- 设施需求 -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="flex items-center gap-1.5 text-[13px] font-semibold text-slate-700">
+<iconify-icon class="text-blue-600" icon="solar:buildings-2-bold" style="font-size:15px"></iconify-icon>
+                  设施需求
+                </span>
+<span class="text-[11px] text-slate-400">可多选</span>
+</div>
+<div class="flex flex-wrap gap-2.5" id="facilityGroup">
+<button class="tag-btn tag-on h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="母婴室" type="button">
+<span>🍼</span>母婴室
+                </button>
+<button class="tag-btn tag-on h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="无障碍" type="button">
+<span>♿</span>无障碍
+                </button>
+<button class="tag-btn h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="亲子餐厅" type="button">
+<span>🍽️</span>亲子餐厅
+                </button>
+<button class="tag-btn h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="地铁直达" type="button">
+<span>🚇</span>地铁直达
+                </button>
+<button class="tag-btn h-9 px-4 rounded-full border border-slate-200 bg-white text-[13px] text-slate-700 inline-flex items-center gap-1.5" data-value="轮椅租借" type="button">
+<span>🦽</span>轮椅租借
+                </button>
+</div>
+</div>
+</div>
+<!-- 右列 -->
+<div class="lg:col-span-5 space-y-6 lg:border-l lg:border-slate-100 lg:pl-6">
+<!-- 步行强度 -->
+<div>
+<label class="flex items-center gap-1.5 text-[13px] font-semibold text-slate-700 mb-2" for="walkSelect">
+<iconify-icon class="text-blue-600" icon="solar:walking-round-bold" style="font-size:15px"></iconify-icon>
+                步行强度上限
+              </label>
+<div class="relative">
+<select class="w-full h-11 pl-3 pr-10 rounded-lg border border-slate-200 bg-slate-50/60 text-[14px] text-slate-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition" id="walkSelect" name="walk">
+<option selected="" value="低">低 · 单段步行 ≤ 800 米</option>
+<option value="中">中 · 单段步行 ≤ 2 公里</option>
+<option value="高">高 · 不限步行距离</option>
+</select>
+</div>
+<div class="mt-2.5 flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-50/70 border border-amber-100">
+<iconify-icon class="text-amber-500 shrink-0" icon="solar:info-circle-bold" style="font-size:14px"></iconify-icon>
+<p class="text-[11px] text-amber-800 m-0 leading-4">含 65 岁以上同行者时，建议不超过「低」。</p>
+</div>
+</div>
+<!-- 补充说明 -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="flex items-center gap-1.5 text-[13px] font-semibold text-slate-700" for="notesInput">
+<iconify-icon class="text-blue-600" icon="solar:chat-round-line-bold" style="font-size:15px"></iconify-icon>
+                  补充说明
+                </label>
+<span class="text-[11px] text-slate-400" id="notesCount">18/120</span>
+</div>
+<textarea class="w-full p-3 rounded-lg border border-slate-200 bg-slate-50/60 text-[13px] leading-6 text-slate-900 outline-none resize-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition" id="notesInput" maxlength="120" name="notes" placeholder="例如：老人腿脚不便，需要中途休息点" rows="4">老人腿脚不便，希望每天有两次以上休息点。</textarea>
+</div>
+<!-- AI 提示 -->
+<div class="rounded-xl border border-slate-200 bg-slate-50/80 p-4">
+<p class="flex items-center gap-1.5 text-[12px] font-semibold text-slate-700 m-0">
+<iconify-icon class="text-blue-600" icon="solar:lightbulb-bolt-bold" style="font-size:14px"></iconify-icon>
+                条件解读预览
+              </p>
+<div class="mt-2 flex flex-wrap gap-1.5" id="interpretation"></div>
+</div>
+</div>
+</div>
+<!-- 底部操作 -->
+<div class="px-8 py-5 bg-slate-50/80 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-5 text-[12px] text-slate-500">
+<span class="inline-flex items-center gap-1.5">
+<iconify-icon class="text-slate-400" icon="solar:document-text-bold" style="font-size:14px"></iconify-icon>
+              检索 50 篇攻略
+            </span>
+<span class="inline-flex items-center gap-1.5">
+<iconify-icon class="text-slate-400" icon="solar:link-circle-bold" style="font-size:14px"></iconify-icon>
+              每条建议附原文出处
+            </span>
+</div>
+<button class="group w-full sm:w-auto h-12 px-10 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold shadow-lg shadow-blue-600/20 transition inline-flex items-center justify-center gap-2" type="submit">
+<span>✨</span>
+            一键生成行程
+            <iconify-icon class="group-hover:translate-x-0.5 transition" icon="solar:arrow-right-linear" style="font-size:18px"></iconify-icon>
+</button>
+</div>
+</form>
+<!-- 能力说明 -->
+<div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white rounded-xl border border-slate-200 p-5">
+<div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+<iconify-icon icon="solar:database-bold" style="font-size:16px"></iconify-icon>
+</div>
+<p class="mt-3 text-[13px] font-semibold text-slate-900 m-0">攻略库检索</p>
+<p class="mt-1.5 text-[12px] leading-5 text-slate-500 m-0">从 50 篇经人工整理的亲子、适老攻略中，召回与条件匹配的原文片段。</p>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 p-5">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+<iconify-icon icon="solar:route-bold" style="font-size:16px"></iconify-icon>
+</div>
+<p class="mt-3 text-[13px] font-semibold text-slate-900 m-0">条件约束排程</p>
+<p class="mt-1.5 text-[12px] leading-5 text-slate-500 m-0">按步行上限、休息点、母婴与无障碍设施筛选景点，并规划合理动线。</p>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 p-5">
+<div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+<iconify-icon icon="solar:link-circle-bold" style="font-size:16px"></iconify-icon>
+</div>
+<p class="mt-3 text-[13px] font-semibold text-slate-900 m-0">出处可核对</p>
+<p class="mt-1.5 text-[12px] leading-5 text-slate-500 m-0">每条行程建议旁标注蓝色片段编号，点击即可查看原文与来源说明。</p>
+</div>
+</div>
+</section>
+<footer class="border-t border-slate-200 bg-white">
+<div class="max-w-[1180px] mx-auto px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[12px] text-slate-500">
+<p class="m-0">随行条件 · 让每一次多代同游都更从容</p>
+<div class="flex items-center gap-5">
+<a class="hover:text-blue-600 no-underline text-slate-500" href="admin.html">攻略后台</a>
+<span>攻略库最后更新：2026-11-08</span>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<script>
+  (function () {
+    var peopleGroup = document.getElementById('peopleGroup');
+    var facilityGroup = document.getElementById('facilityGroup');
+    var interpretation = document.getElementById('interpretation');
+    var notesInput = document.getElementById('notesInput');
+    var notesCount = document.getElementById('notesCount');
+    var planForm = document.getElementById('planForm');
+
+    function bindGroup(group) {
+      if (!group) return;
+      group.addEventListener('click', function (event) {
+        var btn = event.target.closest('.tag-btn');
+        if (!btn) return;
+        btn.classList.toggle('tag-on');
+        renderInterpretation();
+      });
+    }
+
+    function selectedValues(group) {
+      if (!group) return [];
+      return Array.prototype.slice.call(group.querySelectorAll('.tag-btn.tag-on')).map(function (btn) {
+        return btn.getAttribute('data-value');
+      });
+    }
+
+    function renderInterpretation() {
+      if (!interpretation) return;
+      var city = document.getElementById('cityInput').value.trim() || '目的地';
+      var days = document.getElementById('daysSelect').options[document.getElementById('daysSelect').selectedIndex].text.split('·')[0].trim();
+      var walk = document.getElementById('walkSelect').value;
+      var people = selectedValues(peopleGroup);
+      var facilities = selectedValues(facilityGroup);
+
+      var chips = [
+        { icon: 'solar:map-point-bold', text: city + ' · ' + days },
+        { icon: 'solar:users-group-rounded-bold', text: people.length ? people.join(' / ') : '未选择同行人员' },
+        { icon: 'solar:walking-round-bold', text: '步行 ' + walk }
+      ];
+      if (facilities.length) {
+        chips.push({ icon: 'solar:buildings-2-bold', text: facilities.join(' / ') });
+      }
+
+      interpretation.innerHTML = chips.map(function (chip) {
+        return '<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white border border-slate-200 text-[11px] text-slate-600">'
+          + '<iconify-icon icon="' + chip.icon + '" class="text-blue-500" style="font-size:12px"></iconify-icon>'
+          + chip.text + '</span>';
+      }).join('');
+    }
+
+    if (notesInput && notesCount) {
+      notesInput.addEventListener('input', function () {
+        notesCount.textContent = notesInput.value.length + '/120';
+      });
+    }
+
+    ['cityInput', 'daysSelect', 'walkSelect'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', renderInterpretation);
+        el.addEventListener('input', renderInterpretation);
+      }
+    });
+
+    bindGroup(peopleGroup);
+    bindGroup(facilityGroup);
+
+    if (planForm) {
+      planForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var btn = planForm.querySelector('button[type="submit"]');
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.add('opacity-90');
+          btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span> 正在准备检索…';
+        }
+        window.setTimeout(function () {
+          window.location.href = 'generating.html';
+        }, 550);
+      });
+    }
+
+    renderInterpretation();
+  })();
+</script>
+</body>
+</html>

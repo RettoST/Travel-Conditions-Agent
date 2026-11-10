@@ -1,0 +1,9 @@
+{
+  "city": "杭州",
+  "days": 2,
+  "companions": ["child", "elderly"],
+  "weather": ["day1_sunny", "day2_rain"],
+  "walkingLevel": "低",
+  "facilityNeeds": ["baby_room", "accessible"],
+  "extraInput": "老人腿脚不便，希望少爬坡"
+}

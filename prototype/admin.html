@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>随行条件 · 攻略管理后台</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #F5F7FA;
+  }
+  .menu-item {
+    transition: all .15s ease;
+  }
+  .menu-item:hover {
+    background-color: #F8FAFC;
+  }
+  .menu-active {
+    background-color: #EFF4FF;
+    color: #1D4ED8;
+    font-weight: 600;
+  }
+  .menu-active .menu-icon {
+    color: #2563EB;
+  }
+  tbody tr:hover {
+    background-color: #F8FAFC;
+  }
+  #importModal {
+    display: none;
+  }
+  #importModal.is-open {
+    display: flex;
+  }
+  .drop-zone {
+    transition: all .15s ease;
+  }
+  .drop-zone:hover {
+    border-color: #93B4F8;
+    background-color: #F8FAFF;
+  }
+</style>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center text-slate-800">
+<div class="w-full h-full max-w-[1440px] flex bg-[#F5F7FA] overflow-hidden">
+<!-- 左侧菜单 -->
+<aside class="w-[228px] shrink-0 bg-white border-r border-slate-200 flex flex-col">
+<div class="h-[64px] px-5 flex items-center border-b border-slate-100">
+<a class="flex items-center gap-2.5 no-underline" href="home.html">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center text-white">
+<iconify-icon icon="solar:compass-bold" style="font-size:18px"></iconify-icon>
+</div>
+<div class="leading-tight">
+<p class="text-[14px] font-bold text-slate-900 m-0">随行条件</p>
+<p class="text-[10px] text-slate-500 m-0">管理后台</p>
+</div>
+</a>
+</div>
+<div class="px-3 py-4">
+<p class="px-3 mb-2 text-[10.5px] font-medium text-slate-400 tracking-wider m-0">攻略库</p>
+<nav class="space-y-1">
+<button class="menu-item menu-active w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-slate-600 text-left" data-menu="guides" type="button">
+<iconify-icon class="menu-icon text-slate-400" icon="solar:folder-with-files-bold" style="font-size:16px"></iconify-icon>
+          攻略管理
+          <span class="ml-auto px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-500">50</span>
+</button>
+<button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-slate-600 text-left" data-menu="snippets" type="button">
+<iconify-icon class="menu-icon text-slate-400" icon="solar:document-add-bold" style="font-size:16px"></iconify-icon>
+          片段预览
+          <span class="ml-auto px-1.5 py-0.5 rounded bg-slate-100 text-[10px] text-slate-500">312</span>
+</button>
+<button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-slate-600 text-left" data-menu="logs" type="button">
+<iconify-icon class="menu-icon text-slate-400" icon="solar:history-bold" style="font-size:16px"></iconify-icon>
+          调用日志
+        </button>
+</nav>
+</div>
+<div class="px-3 pb-4">
+<p class="px-3 mb-2 text-[10.5px] font-medium text-slate-400 tracking-wider m-0">快捷入口</p>
+<div class="space-y-1">
+<a class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-slate-600 hover:bg-slate-50 no-underline" href="home.html">
+<iconify-icon class="text-slate-400" icon="solar:magic-stick-3-bold" style="font-size:16px"></iconify-icon>
+          新建行程
+        </a>
+<a class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-slate-600 hover:bg-slate-50 no-underline" href="result.html">
+<iconify-icon class="text-slate-400" icon="solar:route-bold" style="font-size:16px"></iconify-icon>
+          结果页预览
+        </a>
+<a class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] text-slate-600 hover:bg-slate-50 no-underline" href="source_modal.html">
+<iconify-icon class="text-slate-400" icon="solar:eye-bold" style="font-size:16px"></iconify-icon>
+          出处浮层预览
+        </a>
+</div>
+</div>
+<div class="mt-auto px-3 pb-4">
+<div class="rounded-xl bg-slate-50 border border-slate-200 p-3.5">
+<div class="flex items-center justify-between">
+<p class="text-[11.5px] font-semibold text-slate-700 m-0">预处理服务</p>
+<span class="inline-flex items-center gap-1 text-[10px] text-emerald-600">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>正常
+          </span>
+</div>
+<div class="mt-2 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+<div class="h-full w-[86%] bg-emerald-500 rounded-full"></div>
+</div>
+<p class="mt-1.5 text-[10px] text-slate-500 m-0">今日已处理 43 / 50 篇</p>
+</div>
+<div class="mt-3 flex items-center gap-2 px-1">
+<span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-semibold flex items-center justify-center">林</span>
+<div class="leading-tight">
+<p class="text-[12px] font-medium text-slate-800 m-0">林女士</p>
+<p class="text-[10px] text-slate-400 m-0">运营管理员</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- 右侧内容 -->
+<div class="flex-1 min-w-0 flex flex-col overflow-hidden">
+<!-- 顶栏 -->
+<header class="shrink-0 h-[64px] bg-white border-b border-slate-200 flex items-center justify-between px-7">
+<div class="flex items-center gap-2 text-[12.5px] text-slate-500">
+<span>攻略库</span>
+<iconify-icon icon="solar:alt-arrow-right-linear" style="font-size:13px"></iconify-icon>
+<span class="text-slate-900 font-medium" id="breadcrumb">攻略管理</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative hidden md:block">
+<input class="w-[230px] h-9 pl-9 pr-3 rounded-lg border border-slate-200 bg-slate-50 text-[12.5px] outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10" placeholder="搜索攻略标题或城市" type="text"/>
+<iconify-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" icon="solar:magnifer-bold" style="font-size:14px"></iconify-icon>
+</div>
+<button class="w-9 h-9 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-blue-600 flex items-center justify-center" type="button">
+<iconify-icon icon="solar:bell-bold" style="font-size:16px"></iconify-icon>
+</button>
+<a class="h-9 px-3.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[12.5px] font-medium no-underline inline-flex items-center gap-1.5" href="home.html">
+<iconify-icon icon="solar:arrow-left-linear" style="font-size:14px"></iconify-icon>
+          返回前台
+        </a>
+</div>
+</header>
+<!-- 内容滚动区 -->
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="px-7 py-6">
+<!-- 攻略管理面板 -->
+<section id="panelGuides">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<h1 class="text-[22px] font-bold text-slate-900 tracking-tight m-0">攻略管理</h1>
+<p class="mt-1.5 text-[12.5px] text-slate-500 m-0">导入长攻略后，系统会自动切分片段并校验步行强度、母婴与无障碍设施信息。</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-lg border border-slate-200 bg-white text-[12.5px] text-slate-600 hover:border-blue-300 hover:text-blue-700 inline-flex items-center gap-1.5" type="button">
+<iconify-icon icon="solar:refresh-bold" style="font-size:14px"></iconify-icon>
+                刷新状态
+              </button>
+<button class="h-9 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[12.5px] font-medium shadow-sm shadow-blue-600/20 inline-flex items-center gap-1.5" id="importBtn" type="button">
+<iconify-icon icon="solar:upload-minimalistic-bold" style="font-size:15px"></iconify-icon>
+                导入长攻略
+              </button>
+</div>
+</div>
+<!-- 数据概览 -->
+<div class="mt-5 grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-white rounded-xl border border-slate-200 p-4">
+<p class="text-[11.5px] text-slate-500 m-0">攻略总数</p>
+<p class="mt-1.5 text-[24px] font-bold text-slate-900 leading-none m-0">50</p>
+<p class="mt-2 text-[11px] text-slate-400 m-0">覆盖 6 个城市</p>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 p-4">
+<p class="text-[11.5px] text-slate-500 m-0">预处理成功</p>
+<p class="mt-1.5 text-[24px] font-bold text-emerald-600 leading-none m-0">47</p>
+<p class="mt-2 text-[11px] text-slate-400 m-0">成功率 94.0%</p>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 p-4">
+<p class="text-[11.5px] text-slate-500 m-0">预处理失败</p>
+<p class="mt-1.5 text-[24px] font-bold text-rose-500 leading-none m-0">3</p>
+<p class="mt-2 text-[11px] text-slate-400 m-0">待人工复核</p>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 p-4">
+<p class="text-[11.5px] text-slate-500 m-0">可用片段</p>
+<p class="mt-1.5 text-[24px] font-bold text-slate-900 leading-none m-0">312</p>
+<p class="mt-2 text-[11px] text-slate-400 m-0">今日新增 18 条</p>
+</div>
+</div>
+<!-- 表格卡片 -->
+<div class="mt-5 bg-white rounded-xl border border-slate-200 overflow-hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<p class="text-[13.5px] font-semibold text-slate-900 m-0">已导入攻略</p>
+<span class="px-1.5 py-0.5 rounded bg-slate-100 text-[10.5px] text-slate-500">共 8 条展示</span>
+</div>
+<div class="flex items-center gap-2">
+<select class="h-8 pl-2.5 pr-8 rounded-lg border border-slate-200 bg-white text-[11.5px] text-slate-600 outline-none focus:border-blue-500">
+<option>全部城市</option>
+<option>杭州</option>
+<option>苏州</option>
+<option>成都</option>
+<option>厦门</option>
+</select>
+<select class="h-8 pl-2.5 pr-8 rounded-lg border border-slate-200 bg-white text-[11.5px] text-slate-600 outline-none focus:border-blue-500">
+<option>全部状态</option>
+<option>成功</option>
+<option>失败</option>
+</select>
+</div>
+</div>
+<div class="overflow-x-auto [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<table class="w-full text-left border-collapse min-w-[820px]">
+<thead>
+<tr class="bg-slate-50 text-[11.5px] text-slate-500">
+<th class="px-5 py-2.5 font-medium">攻略标题</th>
+<th class="px-4 py-2.5 font-medium w-[90px]">城市</th>
+<th class="px-4 py-2.5 font-medium w-[150px]">导入时间</th>
+<th class="px-4 py-2.5 font-medium w-[110px]">片段数</th>
+<th class="px-4 py-2.5 font-medium w-[140px]">预处理状态</th>
+<th class="px-5 py-2.5 font-medium w-[90px] text-right">操作</th>
+</tr>
+</thead>
+<tbody class="text-[12.5px] text-slate-700" id="guideTable">
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">杭州两日亲子游攻略（团队整理）</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">杭州</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-08 10:24</td>
+<td class="px-4 py-3.5 text-slate-600">14</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:check-circle-bold" style="font-size:12px"></iconify-icon>成功
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">预览</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">杭州雨天遛娃室内场馆清单</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">杭州</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-08 09:52</td>
+<td class="px-4 py-3.5 text-slate-600">9</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:check-circle-bold" style="font-size:12px"></iconify-icon>成功
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">预览</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">杭州老城区慢行路线整理</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">杭州</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-07 16:31</td>
+<td class="px-4 py-3.5 text-slate-600">11</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:check-circle-bold" style="font-size:12px"></iconify-icon>成功
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">预览</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">带娃杭州吃饭避坑笔记</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">杭州</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-07 14:08</td>
+<td class="px-4 py-3.5 text-slate-600">6</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-50 text-rose-600 border border-rose-100 text-[11px]">
+<iconify-icon icon="solar:close-circle-bold" style="font-size:12px"></iconify-icon>失败
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">重试</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">适老出游设施核对清单</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">杭州</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-06 20:15</td>
+<td class="px-4 py-3.5 text-slate-600">18</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:check-circle-bold" style="font-size:12px"></iconify-icon>成功
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">预览</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">苏州园林亲子半日路线</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">苏州</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-06 11:40</td>
+<td class="px-4 py-3.5 text-slate-600">12</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:check-circle-bold" style="font-size:12px"></iconify-icon>成功
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">预览</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">成都宽窄巷子婴幼儿友好地图</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">成都</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-05 15:27</td>
+<td class="px-4 py-3.5 text-slate-600">8</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-50 text-rose-600 border border-rose-100 text-[11px]">
+<iconify-icon icon="solar:close-circle-bold" style="font-size:12px"></iconify-icon>失败
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">重试</button>
+</td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5">
+<div class="flex items-center gap-2.5">
+<iconify-icon class="text-blue-500 shrink-0" icon="solar:document-text-bold" style="font-size:16px"></iconify-icon>
+<span class="font-medium text-slate-900">厦门环岛路无障碍散步指南</span>
+</div>
+</td>
+<td class="px-4 py-3.5 text-slate-600">厦门</td>
+<td class="px-4 py-3.5 text-slate-500">2026-11-04 08:33</td>
+<td class="px-4 py-3.5 text-slate-600">10</td>
+<td class="px-4 py-3.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:check-circle-bold" style="font-size:12px"></iconify-icon>成功
+                      </span>
+</td>
+<td class="px-5 py-3.5 text-right">
+<button class="text-[12px] text-blue-600 hover:text-blue-700" type="button">预览</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between px-5 py-3.5 border-t border-slate-100">
+<p class="text-[11.5px] text-slate-500 m-0">显示第 1–8 条，共 50 条</p>
+<div class="flex items-center gap-1">
+<button class="w-7 h-7 rounded-md border border-slate-200 text-slate-400 text-[12px] flex items-center justify-center" type="button">
+<iconify-icon icon="solar:alt-arrow-left-linear" style="font-size:13px"></iconify-icon>
+</button>
+<button class="w-7 h-7 rounded-md bg-blue-600 text-white text-[11.5px] font-medium" type="button">1</button>
+<button class="w-7 h-7 rounded-md border border-slate-200 text-slate-600 text-[11.5px]" type="button">2</button>
+<button class="w-7 h-7 rounded-md border border-slate-200 text-slate-600 text-[11.5px]" type="button">3</button>
+<button class="w-7 h-7 rounded-md border border-slate-200 text-slate-500 text-[12px] flex items-center justify-center" type="button">
+<iconify-icon icon="solar:alt-arrow-right-linear" style="font-size:13px"></iconify-icon>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 片段预览面板 -->
+<section class="hidden" id="panelSnippets">
+<h1 class="text-[22px] font-bold text-slate-900 tracking-tight m-0">片段预览</h1>
+<p class="mt-1.5 text-[12.5px] text-slate-500 m-0">预处理生成的结构化片段，前台引用标记均指向这里的原文。</p>
+<div class="mt-5 space-y-3">
+<div class="bg-white rounded-xl border border-slate-200 p-5">
+<div class="flex items-center justify-between">
+<p class="text-[13.5px] font-semibold text-slate-900 m-0">[片段2] 西湖湖滨步道</p>
+<span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100 text-[10.5px]">来自：杭州两日亲子游攻略</span>
+</div>
+<p class="mt-2.5 text-[12.5px] leading-6 text-slate-600 m-0">“西湖适合全家出游，湖边步道平坦，推婴儿车方便。湖滨三公园至断桥段全程无台阶，沿途设有多处休息椅与直饮水点。”</p>
+<div class="mt-3 flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10.5px]">步行强度：低</span>
+<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100 text-[10.5px]">母婴：有</span>
+<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100 text-[10.5px]">无障碍：有</span>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 p-5">
+<div class="flex items-center justify-between">
+<p class="text-[13.5px] font-semibold text-slate-900 m-0">[片段3] 浙江省博物馆</p>
+<span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100 text-[10.5px]">来自：杭州雨天遛娃室内场馆清单</span>
+</div>
+<p class="mt-2.5 text-[12.5px] leading-6 text-slate-600 m-0">“浙江省博物馆孤山馆区免费预约，一层有无障碍坡道与轮椅租借，馆内走廊平坦，电梯直达各层。”</p>
+<div class="mt-3 flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10.5px]">步行强度：低</span>
+<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100 text-[10.5px]">室内场馆：有</span>
+<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100 text-[10.5px]">无障碍：有</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 调用日志面板 -->
+<section class="hidden" id="panelLogs">
+<h1 class="text-[22px] font-bold text-slate-900 tracking-tight m-0">调用日志</h1>
+<p class="mt-1.5 text-[12.5px] text-slate-500 m-0">最近的行程生成调用记录，用于核对检索质量与响应耗时。</p>
+<div class="mt-5 bg-white rounded-xl border border-slate-200 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 text-[11.5px] text-slate-500">
+<th class="px-5 py-2.5 font-medium">调用时间</th>
+<th class="px-4 py-2.5 font-medium">输入条件</th>
+<th class="px-4 py-2.5 font-medium">召回片段</th>
+<th class="px-4 py-2.5 font-medium">耗时</th>
+<th class="px-5 py-2.5 font-medium text-right">状态</th>
+</tr>
+</thead>
+<tbody class="text-[12.5px] text-slate-700">
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5 text-slate-500">2026-11-10 14:52:06</td>
+<td class="px-4 py-3.5">杭州 · 2 天 · 老人/小孩 · 步行低</td>
+<td class="px-4 py-3.5">6 条</td>
+<td class="px-4 py-3.5 text-slate-500">2.7s</td>
+<td class="px-5 py-3.5 text-right"><span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">已完成</span></td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5 text-slate-500">2026-11-10 14:31:44</td>
+<td class="px-4 py-3.5">苏州 · 1 天 · 成人 · 步行中</td>
+<td class="px-4 py-3.5">4 条</td>
+<td class="px-4 py-3.5 text-slate-500">1.9s</td>
+<td class="px-5 py-3.5 text-right"><span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">已完成</span></td>
+</tr>
+<tr class="border-t border-slate-100">
+<td class="px-5 py-3.5 text-slate-500">2026-11-10 13:58:20</td>
+<td class="px-4 py-3.5">成都 · 3 天 · 小孩 · 步行高</td>
+<td class="px-4 py-3.5">0 条</td>
+<td class="px-4 py-3.5 text-slate-500">4.2s</td>
+<td class="px-5 py-3.5 text-right"><span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-100 text-[11px]">已降级</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</div>
+</div>
+<!-- 导入长攻略弹层 -->
+<div aria-labelledby="importTitle" aria-modal="true" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/55 px-6" id="importModal" role="dialog">
+<div class="w-full max-w-[520px] bg-white rounded-2xl shadow-2xl overflow-hidden">
+<div class="flex items-start justify-between px-6 pt-5 pb-4 border-b border-slate-100">
+<div>
+<h2 class="text-[16px] font-bold text-slate-900 m-0" id="importTitle">导入长攻略</h2>
+<p class="mt-1 text-[11.5px] text-slate-500 m-0">支持 Markdown / TXT，单篇不超过 20,000 字</p>
+</div>
+<button aria-label="关闭导入弹层" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center" id="importClose" type="button">
+<iconify-icon icon="solar:close-circle-bold" style="font-size:20px"></iconify-icon>
+</button>
+</div>
+<div class="px-6 py-5 space-y-4">
+<div>
+<label class="block text-[12.5px] font-medium text-slate-700 mb-1.5" for="importCity">所属城市</label>
+<select class="w-full h-10 pl-3 pr-10 rounded-lg border border-slate-200 bg-slate-50 text-[13px] outline-none focus:border-blue-500 focus:bg-white" id="importCity">
+<option>杭州</option>
+<option>苏州</option>
+<option>成都</option>
+<option>厦门</option>
+</select>
+</div>
+<div class="drop-zone border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 px-5 py-8 text-center">
+<iconify-icon class="text-blue-500" icon="solar:upload-minimalistic-bold" style="font-size:26px"></iconify-icon>
+<p class="mt-2 text-[12.5px] font-medium text-slate-700 m-0">将攻略文件拖到此处，或点击选择文件</p>
+<p class="mt-1 text-[11px] text-slate-400 m-0">导入后将自动切分片段并校验设施信息</p>
+</div>
+<p class="text-[11px] leading-5 text-slate-400 m-0">本页为原型展示，导入按钮仅演示界面反馈，不会真实上传文件。</p>
+</div>
+<div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+<button class="h-9 px-4 rounded-lg border border-slate-200 bg-white text-[12.5px] text-slate-600 hover:border-slate-300" id="importCancel" type="button">取消</button>
+<button class="h-9 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[12.5px] font-medium" id="importConfirm" type="button">开始导入</button>
+</div>
+</div>
+</div>
+<script>
+  (function () {
+    var menuButtons = document.querySelectorAll('[data-menu]');
+    var panels = {
+      guides: document.getElementById('panelGuides'),
+      snippets: document.getElementById('panelSnippets'),
+      logs: document.getElementById('panelLogs')
+    };
+    var labels = { guides: '攻略管理', snippets: '片段预览', logs: '调用日志' };
+    var breadcrumb = document.getElementById('breadcrumb');
+
+    function showPanel(key) {
+      Object.keys(panels).forEach(function (name) {
+        if (!panels[name]) return;
+        panels[name].classList.toggle('hidden', name !== key);
+      });
+      menuButtons.forEach(function (btn) {
+        btn.classList.toggle('menu-active', btn.getAttribute('data-menu') === key);
+      });
+      if (breadcrumb) breadcrumb.textContent = labels[key] || '';
+    }
+
+    menuButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        showPanel(btn.getAttribute('data-menu'));
+      });
+    });
+
+    var importModal = document.getElementById('importModal');
+
+    function openImport() {
+      importModal.classList.add('is-open');
+    }
+    function closeImport() {
+      importModal.classList.remove('is-open');
+    }
+
+    document.getElementById('importBtn').addEventListener('click', openImport);
+    document.getElementById('importClose').addEventListener('click', closeImport);
+    document.getElementById('importCancel').addEventListener('click', closeImport);
+    document.getElementById('importConfirm').addEventListener('click', function () {
+      closeImport();
+    });
+    importModal.addEventListener('click', function (event) {
+      if (event.target === importModal) closeImport();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && importModal.classList.contains('is-open')) closeImport();
+    });
+
+    // 表格操作：预览跳转到片段预览面板
+    document.querySelectorAll('#guideTable button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var text = btn.textContent.trim();
+        if (text === '重试') {
+          btn.textContent = '重试中…';
+          btn.classList.add('text-slate-400');
+          window.setTimeout(function () {
+            btn.textContent = '重试';
+            btn.classList.remove('text-slate-400');
+          }, 1200);
+          return;
+        }
+        showPanel('snippets');
+      });
+    });
+
+    // 表格筛选：按城市过滤
+    var cityFilter = document.querySelector('#panelGuides select');
+    if (cityFilter) {
+      cityFilter.addEventListener('change', function () {
+        var city = cityFilter.value;
+        document.querySelectorAll('#guideTable tr').forEach(function (row) {
+          var rowCity = row.children[1] ? row.children[1].textContent.trim() : '';
+          var visible = city === '全部城市' || rowCity === city;
+          row.classList.toggle('hidden', !visible);
+        });
+      });
+    }
+  })();
+</script>
+</body>
+</html>

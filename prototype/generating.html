@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>随行条件 · 正在生成行程</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #F5F7FA;
+  }
+  .caret::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 16px;
+    margin-left: 3px;
+    vertical-align: -3px;
+    background-color: #2563EB;
+    animation: blink 1s steps(2, start) infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .line-in {
+    animation: lineIn .32s ease-out both;
+  }
+  @keyframes lineIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .bar-fill {
+    transition: width .45s ease;
+  }
+</style>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center text-slate-800">
+<div class="w-full h-full max-w-[1440px] flex flex-col bg-[#F5F7FA] overflow-hidden">
+<!-- 顶部导航（简化） -->
+<header class="shrink-0 h-[64px] bg-white border-b border-slate-200/80 flex items-center px-8 gap-6">
+<a class="flex items-center gap-2.5 no-underline shrink-0" href="home.html">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center text-white shadow-sm shadow-blue-200">
+<iconify-icon icon="solar:compass-bold" style="font-size:20px"></iconify-icon>
+</div>
+<p class="text-[16px] font-bold text-slate-900 tracking-tight m-0">随行条件</p>
+</a>
+<!-- 简化搜索栏 -->
+<div class="flex-1 max-w-[560px] hidden md:flex items-center gap-2 h-10 px-3 rounded-lg bg-slate-50 border border-slate-200">
+<iconify-icon class="text-slate-400" icon="solar:magnifer-bold" style="font-size:16px"></iconify-icon>
+<div class="flex items-center gap-2 text-[13px] text-slate-700">
+<span class="font-medium">杭州</span>
+<span class="text-slate-300">·</span>
+<span>2 天</span>
+<span class="text-slate-300">·</span>
+<span>老人 + 小孩 + 成人</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 text-[11px] border border-blue-100">步行低</span>
+</div>
+<a class="ml-auto text-[12px] text-blue-600 hover:text-blue-700 no-underline shrink-0" href="home.html">修改条件</a>
+</div>
+<div class="ml-auto flex items-center gap-2 text-[12px] text-slate-500">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      检索引擎在线
+    </div>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="max-w-[1100px] mx-auto px-8 py-10">
+<!-- 主卡片 -->
+<div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_40px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
+<div class="px-8 py-6 border-b border-slate-100 flex items-start justify-between gap-6">
+<div class="flex items-start gap-3.5">
+<div class="relative shrink-0">
+<div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+<iconify-icon icon="solar:cpu-bolt-bold" style="font-size:22px"></iconify-icon>
+</div>
+<span class="absolute -right-0.5 -bottom-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white"></span>
+</div>
+<div>
+<h1 class="text-[18px] font-bold text-slate-900 m-0">正在为您生成杭州 2 日轻松游</h1>
+<p class="text-[12.5px] text-slate-500 mt-1 m-0">基于老人、小孩、成人的同行条件与步行强度「低」进行检索与排程</p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<p class="text-[24px] font-bold text-blue-600 leading-none m-0" id="percentText">8%</p>
+<p class="text-[11px] text-slate-400 mt-1.5 m-0">预计还需 2 秒</p>
+</div>
+</div>
+<!-- 进度条 -->
+<div class="h-1 bg-slate-100">
+<div class="bar-fill h-full bg-gradient-to-r from-blue-600 to-emerald-500" id="progressBar" style="width:8%"></div>
+</div>
+<!-- 流式输出区 -->
+<div class="px-8 py-6">
+<div class="rounded-xl border border-slate-200 bg-slate-50/60 p-6 min-h-[208px]">
+<p class="flex items-center gap-2 text-[12px] font-medium text-slate-500 m-0 mb-4">
+<iconify-icon class="text-blue-500" icon="solar:document-add-bold" style="font-size:14px"></iconify-icon>
+              生成日志 · 实时输出
+            </p>
+<p class="caret text-[16px] leading-8 text-slate-900 font-medium m-0" id="typeLine">正在从 50 篇攻略中检索并生成……</p>
+<div class="mt-4 space-y-2.5" id="logArea"></div>
+</div>
+<!-- 检索指标 -->
+<div class="mt-5 grid grid-cols-3 gap-4">
+<div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+<p class="text-[11px] text-slate-500 m-0">已扫描攻略</p>
+<p class="mt-1 text-[17px] font-bold text-slate-900 m-0"><span id="scannedNum">12</span><span class="text-[12px] font-medium text-slate-400"> / 50 篇</span></p>
+</div>
+<div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+<p class="text-[11px] text-slate-500 m-0">命中片段</p>
+<p class="mt-1 text-[17px] font-bold text-slate-900 m-0"><span id="hitNum">7</span><span class="text-[12px] font-medium text-slate-400"> 条</span></p>
+</div>
+<div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+<p class="text-[11px] text-slate-500 m-0">条件满足率</p>
+<p class="mt-1 text-[17px] font-bold text-emerald-600 m-0"><span id="rateNum">84</span><span class="text-[12px] font-medium text-slate-400">%</span></p>
+</div>
+</div>
+</div>
+<div class="px-8 pb-6 flex items-center justify-between gap-4">
+<p class="text-[11.5px] text-slate-400 m-0 flex items-center gap-1.5">
+<iconify-icon icon="solar:lock-keyhole-minimalistic-bold" style="font-size:13px"></iconify-icon>
+            检索过程不会保存您的补充说明原文
+          </p>
+<a class="text-[12px] text-slate-500 hover:text-blue-600 no-underline" href="result.html">跳过等待，直接查看结果 →</a>
+</div>
+</div>
+<!-- 生成步骤 -->
+<div class="mt-6 bg-white rounded-2xl border border-slate-200 px-8 py-5">
+<div class="grid grid-cols-4 gap-3">
+<div class="step-item flex items-start gap-2.5" data-step="1">
+<span class="step-dot w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 text-[11px] font-semibold">1</span>
+<div>
+<p class="text-[12.5px] font-semibold text-slate-900 m-0">解析条件</p>
+<p class="text-[11px] text-slate-500 mt-1 m-0">同行人员 / 步行 / 设施</p>
+</div>
+</div>
+<div class="step-item flex items-start gap-2.5" data-step="2">
+<span class="step-dot w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0 text-[11px] font-semibold">2</span>
+<div>
+<p class="text-[12.5px] font-semibold text-slate-400 m-0">检索攻略库</p>
+<p class="text-[11px] text-slate-400 mt-1 m-0">召回 50 篇候选题库</p>
+</div>
+</div>
+<div class="step-item flex items-start gap-2.5" data-step="3">
+<span class="step-dot w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0 text-[11px] font-semibold">3</span>
+<div>
+<p class="text-[12.5px] font-semibold text-slate-400 m-0">片段比对</p>
+<p class="text-[11px] text-slate-400 mt-1 m-0">校验无障碍与母婴设施</p>
+</div>
+</div>
+<div class="step-item flex items-start gap-2.5" data-step="4">
+<span class="step-dot w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0 text-[11px] font-semibold">4</span>
+<div>
+<p class="text-[12.5px] font-semibold text-slate-400 m-0">生成行程</p>
+<p class="text-[11px] text-slate-400 mt-1 m-0">输出带出处的排程</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+  (function () {
+    var progressBar = document.getElementById('progressBar');
+    var percentText = document.getElementById('percentText');
+    var typeLine = document.getElementById('typeLine');
+    var logArea = document.getElementById('logArea');
+    var scannedNum = document.getElementById('scannedNum');
+    var hitNum = document.getElementById('hitNum');
+    var rateNum = document.getElementById('rateNum');
+
+    var fullText = '正在从 50 篇攻略中检索并生成……';
+    var typeIndex = 0;
+
+    // 打字机：首句循环呈现
+    typeLine.textContent = '';
+    var typer = window.setInterval(function () {
+      if (typeIndex <= fullText.length) {
+        typeLine.textContent = fullText.slice(0, typeIndex);
+        typeIndex += 1;
+      }
+      if (typeIndex > fullText.length) {
+        window.clearInterval(typer);
+        startStreaming();
+      }
+    }, 30);
+
+    function addLog(icon, text, tone) {
+      var row = document.createElement('div');
+      row.className = 'line-in flex items-start gap-2 text-[12.5px] leading-5';
+      var color = tone === 'green' ? 'text-emerald-600' : 'text-blue-600';
+      row.innerHTML = '<iconify-icon icon="' + icon + '" class="' + color + ' shrink-0 mt-0.5" style="font-size:14px"></iconify-icon>'
+        + '<span class="text-slate-600">' + text + '</span>';
+      logArea.appendChild(row);
+    }
+
+    var steps = [
+      { at: 0, text: '解析条件：老人 / 小孩 / 成人 · 步行强度上限「低」· 需要母婴室与无障碍', icon: 'solar:check-circle-bold' },
+      { at: 420, text: '命中攻略《杭州两日亲子游攻略（团队整理）》· 西湖片段 2 与条件匹配度 96%', icon: 'solar:document-text-bold' },
+      { at: 820, text: '校验设施：西湖湖滨步道无障碍坡道可用，河坊街设有母婴室', icon: 'solar:buildings-2-bold' },
+      { at: 1180, text: '识别雨天备选：浙江省博物馆（室内 · 免费 · 电梯直达）', icon: 'solar:check-circle-bold' },
+      { at: 1500, text: '排程完成，正在生成带出处的 2 日行程', icon: 'solar:route-bold' }
+    ];
+
+    var scannedTimer = null;
+    var hitTimer = null;
+
+    function animateNumber(el, from, to, duration) {
+      var start = Date.now();
+      var timer = window.setInterval(function () {
+        var ratio = Math.min(1, (Date.now() - start) / duration);
+        el.textContent = Math.round(from + (to - from) * ratio);
+        if (ratio >= 1) window.clearInterval(timer);
+      }, 60);
+      return timer;
+    }
+
+    function startStreaming() {
+      steps.forEach(function (step) {
+        window.setTimeout(function () {
+          addLog(step.icon, step.text, step.at === 820 ? 'green' : 'blue');
+        }, step.at);
+      });
+
+      if (scannedNum) scannedTimer = animateNumber(scannedNum, 12, 50, 1900);
+      if (hitNum) hitTimer = animateNumber(hitNum, 7, 14, 1900);
+      if (rateNum) animateNumber(rateNum, 84, 98, 1900);
+    }
+
+    // 进度分段推进
+    var progressTimer = window.setInterval(function () {
+      var current = parseInt(progressBar.style.width, 10) || 8;
+      var next = current + Math.floor(Math.random() * 7) + 3;
+      if (next > 96) next = 96;
+      progressBar.style.width = next + '%';
+      percentText.textContent = next + '%';
+      if (next >= 60 && next < 80) percentText.nextElementSibling.textContent = '预计还需 1 秒';
+      if (next >= 80) percentText.nextElementSibling.textContent = '即将完成…';
+    }, 200);
+
+    // 步骤高亮
+    var stepTimers = [];
+    [900, 1300, 1700].forEach(function (delay, idx) {
+      stepTimers.push(window.setTimeout(function () {
+        activateStep(idx + 2);
+      }, delay));
+    });
+
+    function activateStep(stepNumber) {
+      var items = document.querySelectorAll('.step-item');
+      items.forEach(function (item, idx) {
+        var dot = item.querySelector('.step-dot');
+        var title = item.querySelector('p');
+        if (idx < stepNumber) {
+          dot.className = 'step-dot w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 text-[11px] font-semibold';
+          title.classList.remove('text-slate-400');
+          title.classList.add('text-slate-900');
+        } else if (idx === stepNumber) {
+          dot.className = 'step-dot w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 text-[11px] font-semibold animate-pulse';
+        }
+      });
+    }
+
+    // 2 秒后完成并跳转
+    window.setTimeout(function () {
+      window.clearInterval(progressTimer);
+      if (scannedTimer) window.clearInterval(scannedTimer);
+      if (hitTimer) window.clearInterval(hitTimer);
+      progressBar.style.width = '100%';
+      percentText.textContent = '100%';
+      percentText.nextElementSibling.textContent = '已完成，即将跳转';
+      if (typeLine) {
+        typeLine.textContent = '生成完成，正在打开行程结果……';
+        typeLine.classList.remove('caret');
+      }
+      document.querySelectorAll('.step-dot').forEach(function (dot) {
+        dot.className = 'step-dot w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 text-[11px] font-semibold';
+      });
+      document.querySelectorAll('.step-item p').forEach(function (p) {
+        p.classList.remove('text-slate-400');
+        p.classList.add('text-slate-900');
+      });
+    }, 2000);
+
+    window.setTimeout(function () {
+      window.location.href = 'result.html';
+    }, 2750);
+  })();
+</script>
+</body>
+</html>

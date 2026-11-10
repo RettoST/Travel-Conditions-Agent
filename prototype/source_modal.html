@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>随行条件 · 出处详情浮层（评审视图）</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #F5F7FA;
+  }
+  .cite {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 5px;
+    background-color: #EFF4FF;
+    border: 1px solid #C7D8FB;
+    color: #1D4ED8;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  #reviewModal {
+    display: none;
+  }
+  #reviewModal.is-open {
+    display: flex;
+  }
+  #reviewModal.is-open .modal-card {
+    animation: pop .22s ease-out both;
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(10px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .spec-row + .spec-row {
+    border-top: 1px solid #E5E9F0;
+  }
+</style>
+</head>
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center text-slate-800">
+<div class="w-full h-full max-w-[1440px] flex flex-col bg-[#F5F7FA] overflow-hidden">
+<!-- 顶部导航 -->
+<header class="shrink-0 h-[64px] bg-white border-b border-slate-200/80 flex items-center justify-between px-8">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2.5 no-underline" href="home.html">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center text-white shadow-sm shadow-blue-200">
+<iconify-icon icon="solar:compass-bold" style="font-size:20px"></iconify-icon>
+</div>
+<div class="leading-tight">
+<p class="text-[16px] font-bold text-slate-900 tracking-tight m-0">随行条件</p>
+<p class="text-[11px] text-slate-500 m-0">多代同游智能行程规划</p>
+</div>
+</a>
+<span class="ml-3 px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] border border-amber-200">评审视图</span>
+</div>
+<nav class="flex items-center gap-1 text-[13px]">
+<a class="px-3.5 py-2 rounded-lg text-slate-600 hover:bg-slate-100 no-underline" href="home.html">新建行程</a>
+<a class="px-3.5 py-2 rounded-lg text-slate-600 hover:bg-slate-100 no-underline" href="result.html">我的行程</a>
+<a class="px-3.5 py-2 rounded-lg text-slate-600 hover:bg-slate-100 no-underline" href="admin.html">攻略后台</a>
+<div class="w-px h-5 bg-slate-200 mx-2"></div>
+<button class="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-slate-100" type="button">
+<span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-[12px] font-semibold flex items-center justify-center">林</span>
+<span class="text-[13px] text-slate-700">林女士</span>
+</button>
+</nav>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="max-w-[1240px] mx-auto px-8 py-8">
+<!-- 说明条 -->
+<div class="flex items-start gap-3 px-5 py-4 rounded-xl bg-blue-50 border border-blue-100">
+<iconify-icon class="text-blue-600 shrink-0 mt-0.5" icon="solar:eye-bold" style="font-size:18px"></iconify-icon>
+<div>
+<p class="text-[13px] font-semibold text-slate-900 m-0">出处详情浮层 · 状态展示页</p>
+<p class="mt-1 text-[12px] leading-5 text-slate-600 m-0">
+            本页默认以浮层打开的状态呈现，便于直接评审样式与文案。浮层在
+            <a class="text-blue-600 underline underline-offset-2" href="result.html">结果页</a>
+            中同样可通过点击蓝色引用标记真实唤起，并支持点击右上角 X、底部按钮或遮罩关闭。
+          </p>
+</div>
+</div>
+<!-- 背景行程（示意底层状态） -->
+<div class="mt-6 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+<div>
+<h1 class="text-[22px] font-bold text-slate-900 tracking-tight m-0">为您定制了杭州 2 日轻松游</h1>
+<p class="mt-1.5 text-[12.5px] text-slate-500 m-0">浮层唤起时，底层行程内容保持原样，仅被半透明遮罩覆盖</p>
+</div>
+<a class="h-9 px-4 rounded-lg border border-slate-200 bg-white text-[12.5px] text-slate-700 hover:border-blue-300 hover:text-blue-700 no-underline inline-flex items-center gap-1.5" href="result.html">
+<iconify-icon icon="solar:arrow-left-linear" style="font-size:14px"></iconify-icon>
+            返回结果页
+          </a>
+</div>
+<div class="px-8 py-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="rounded-xl border border-slate-200 p-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-slate-100 text-[11px] text-slate-600">Day 1 · 上午</span>
+<p class="text-[14px] font-semibold text-slate-900 m-0">
+                西湖湖滨步道
+                <button class="cite" data-review="2" type="button">[片段2]</button>
+</p>
+</div>
+<p class="mt-2 text-[12.5px] leading-6 text-slate-600 m-0">沿平坦步道慢行至断桥，全程约 1.4 公里，途经两处休息椅。</p>
+</div>
+<div class="rounded-xl border border-slate-200 p-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-slate-100 text-[11px] text-slate-600">Day 2 · 雨天备选</span>
+<p class="text-[14px] font-semibold text-slate-900 m-0">
+                浙江省博物馆
+                <button class="cite" data-review="3" type="button">[片段3]</button>
+</p>
+</div>
+<p class="mt-2 text-[12.5px] leading-6 text-slate-600 m-0">全室内动线，一层设无障碍坡道与轮椅租借，负一层为儿童互动区。</p>
+</div>
+</div>
+</div>
+<!-- 浮层规格说明 -->
+<div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100">
+<p class="flex items-center gap-2 text-[14px] font-semibold text-slate-900 m-0">
+<iconify-icon class="text-blue-600" icon="solar:layers-minimalistic-bold" style="font-size:16px"></iconify-icon>
+              浮层结构规格
+            </p>
+</div>
+<div class="px-6">
+<div class="spec-row flex items-start gap-4 py-3.5">
+<span class="w-24 shrink-0 text-[11.5px] text-slate-400 pt-0.5">遮罩层</span>
+<p class="text-[12.5px] leading-6 text-slate-700 m-0">全屏 <code class="px-1.5 py-0.5 rounded bg-slate-100 text-[11.5px] text-slate-700">rgba(15,23,42,0.55)</code> 半透明黑，点击空白处关闭</p>
+</div>
+<div class="spec-row flex items-start gap-4 py-3.5">
+<span class="w-24 shrink-0 text-[11.5px] text-slate-400 pt-0.5">卡片尺寸</span>
+<p class="text-[12.5px] leading-6 text-slate-700 m-0">宽 560px，圆角 16px，白色背景，居中显示，带柔和投影</p>
+</div>
+<div class="spec-row flex items-start gap-4 py-3.5">
+<span class="w-24 shrink-0 text-[11.5px] text-slate-400 pt-0.5">标题区</span>
+<p class="text-[12.5px] leading-6 text-slate-700 m-0">景点名称 +「（原文摘录）」，右上角 X 关闭按钮</p>
+</div>
+<div class="spec-row flex items-start gap-4 py-3.5">
+<span class="w-24 shrink-0 text-[11.5px] text-slate-400 pt-0.5">标签区</span>
+<p class="text-[12.5px] leading-6 text-slate-700 m-0">步行强度（绿）、母婴（蓝）、无障碍（蓝）三类设施标签</p>
+</div>
+<div class="spec-row flex items-start gap-4 py-3.5">
+<span class="w-24 shrink-0 text-[11.5px] text-slate-400 pt-0.5">原文区</span>
+<p class="text-[12.5px] leading-6 text-slate-700 m-0">浅灰底引用块，保留攻略原文措辞，不做事后改写</p>
+</div>
+<div class="spec-row flex items-start gap-4 py-3.5">
+<span class="w-24 shrink-0 text-[11.5px] text-slate-400 pt-0.5">来源区</span>
+<p class="text-[12.5px] leading-6 text-slate-700 m-0">来源名称 + 入库时间与预处理校验状态</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+<p class="flex items-center gap-2 text-[14px] font-semibold text-slate-900 m-0">
+<iconify-icon class="text-emerald-600" icon="solar:play-circle-bold" style="font-size:16px"></iconify-icon>
+            开关控制
+          </p>
+<p class="mt-2 text-[12px] leading-5 text-slate-500 m-0">点击按钮可在评审页内反复开关浮层，验证关闭逻辑。</p>
+<div class="mt-4 space-y-2.5">
+<button class="w-full h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium inline-flex items-center justify-center gap-1.5" id="openBtn" type="button">
+<iconify-icon icon="solar:eye-bold" style="font-size:15px"></iconify-icon>
+              打开 [片段2] 出处浮层
+            </button>
+<button class="w-full h-10 rounded-lg border border-slate-200 bg-white hover:border-blue-300 text-slate-700 text-[13px] font-medium inline-flex items-center justify-center gap-1.5" id="openBtn3" type="button">
+<iconify-icon icon="solar:buildings-2-bold" style="font-size:15px"></iconify-icon>
+              打开 [片段3] 出处浮层
+            </button>
+</div>
+<div class="mt-4 rounded-lg bg-slate-50 border border-slate-200 px-4 py-3">
+<p class="text-[11.5px] leading-5 text-slate-500 m-0">支持三种关闭方式：右上角 X、底部「我知道了」按钮、点击遮罩空白处；键盘 Esc 同样可关闭。</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- 出处详情浮层（默认打开） -->
+<div aria-labelledby="reviewTitle" aria-modal="true" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/55 px-6 is-open" id="reviewModal" role="dialog">
+<div class="modal-card w-full max-w-[560px] bg-white rounded-2xl shadow-2xl overflow-hidden">
+<div class="flex items-start justify-between px-6 pt-5 pb-4 border-b border-slate-100">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+<iconify-icon icon="solar:document-text-bold" style="font-size:18px"></iconify-icon>
+</div>
+<div>
+<h2 class="text-[16px] font-bold text-slate-900 m-0" id="reviewTitle">西湖（原文摘录）</h2>
+<p class="text-[11.5px] text-slate-500 mt-1 m-0" id="reviewCite">引用片段 [片段2] · 杭州两日亲子游攻略（团队整理）</p>
+</div>
+</div>
+<button aria-label="关闭浮层" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center" id="reviewClose" type="button">
+<iconify-icon icon="solar:close-circle-bold" style="font-size:20px"></iconify-icon>
+</button>
+</div>
+<div class="px-6 py-5">
+<div class="flex flex-wrap gap-1.5" id="reviewTags">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px]">
+<iconify-icon icon="solar:walking-round-bold" style="font-size:12px"></iconify-icon>
+          步行强度：低
+        </span>
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-100 text-[11px]">
+<iconify-icon icon="solar:baby-bold" style="font-size:12px"></iconify-icon>
+          母婴：有
+        </span>
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-100 text-[11px]">
+<iconify-icon icon="solar:accessibility-bold" style="font-size:12px"></iconify-icon>
+          无障碍：有
+        </span>
+</div>
+<div class="mt-4 rounded-xl bg-slate-50 border border-slate-200 px-5 py-4">
+<p class="text-[13.5px] leading-7 text-slate-700 m-0" id="reviewQuote">
+          “西湖适合全家出游，湖边步道平坦，推婴儿车方便。湖滨三公园至断桥段全程无台阶，沿途设有多处休息椅与直饮水点，老人可分段慢行。”
+        </p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-[12px] text-slate-500">
+<iconify-icon class="text-slate-400" icon="solar:library-bold" style="font-size:14px"></iconify-icon>
+<span id="reviewSource">来源：杭州两日亲子游攻略（团队整理）</span>
+</div>
+</div>
+<div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+<p class="text-[11px] text-slate-400 m-0">片段入库时间：2026-11-06 · 已通过预处理校验</p>
+<button class="h-9 px-4 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-[12.5px] font-medium" id="reviewConfirm" type="button">
+        我知道了
+      </button>
+</div>
+</div>
+</div>
+<script>
+  (function () {
+    var modal = document.getElementById('reviewModal');
+    var titleEl = document.getElementById('reviewTitle');
+    var citeEl = document.getElementById('reviewCite');
+    var quoteEl = document.getElementById('reviewQuote');
+    var sourceEl = document.getElementById('reviewSource');
+    var tagsEl = document.getElementById('reviewTags');
+
+    var data = {
+      '2': {
+        title: '西湖（原文摘录）',
+        cite: '引用片段 [片段2] · 杭州两日亲子游攻略（团队整理）',
+        quote: '“西湖适合全家出游，湖边步道平坦，推婴儿车方便。湖滨三公园至断桥段全程无台阶，沿途设有多处休息椅与直饮水点，老人可分段慢行。”',
+        source: '来源：杭州两日亲子游攻略（团队整理）',
+        tags: [['solar:walking-round-bold', '步行强度：低', 'emerald'], ['solar:baby-bold', '母婴：有', 'blue'], ['solar:accessibility-bold', '无障碍：有', 'blue']]
+      },
+      '3': {
+        title: '浙江省博物馆（原文摘录）',
+        cite: '引用片段 [片段3] · 杭州雨天遛娃室内场馆清单',
+        quote: '“浙江省博物馆孤山馆区免费预约，一层有无障碍坡道与轮椅租借，馆内走廊平坦，电梯直达各层。负一层设有儿童互动区，雨天排队时间通常在 10 分钟以内。”',
+        source: '来源：杭州雨天遛娃室内场馆清单（团队整理）',
+        tags: [['solar:walking-round-bold', '步行强度：低', 'emerald'], ['solar:buildings-2-bold', '室内场馆：有', 'blue'], ['solar:accessibility-bold', '无障碍：有', 'blue']]
+      }
+    };
+
+    function openModal(id) {
+      var item = data[id] || data['2'];
+      titleEl.textContent = item.title;
+      citeEl.textContent = item.cite;
+      quoteEl.textContent = item.quote;
+      sourceEl.textContent = item.source;
+      tagsEl.innerHTML = item.tags.map(function (tag) {
+        var tone = tag[2] === 'emerald'
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
+          : 'bg-blue-50 text-blue-700 border-blue-100';
+        return '<span class="inline-flex items-center gap-1 px-2 py-1 rounded-md border text-[11px] ' + tone + '">'
+          + '<iconify-icon icon="' + tag[0] + '" style="font-size:12px"></iconify-icon>'
+          + tag[1] + '</span>';
+      }).join('');
+      modal.classList.add('is-open');
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+    }
+
+    document.getElementById('reviewClose').addEventListener('click', closeModal);
+    document.getElementById('reviewConfirm').addEventListener('click', closeModal);
+    document.getElementById('openBtn').addEventListener('click', function () { openModal('2'); });
+    document.getElementById('openBtn3').addEventListener('click', function () { openModal('3'); });
+
+    document.querySelectorAll('[data-review]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openModal(btn.getAttribute('data-review'));
+      });
+    });
+
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  })();
+</script>
+</body>
+</html>
